@@ -8,7 +8,7 @@ const HomePage = () => {
         <section className="w-full">
             <Navbar />
             <section className="flex flex-col items-center justify-center w-full bg-slate-200 rounded-lg">
-                <section className="flex items-center justify-center sm:w-[80%] flex-col sm:flex-row gap-5 p-2 h-screen">
+                <section className="flex items-center justify-center sm:w-[90%] flex-col sm:flex-row gap-5 p-2 h-screen bg-gray-300 rounded-lg">
                     <div className="flex flex-col gap-3 sm:w-[50%]">
                         <h1 className="text-4xl font-bold">Stay on top of your tasks with our Todo App</h1>
                         <h1>Organize your life, boost your productivity, and never miss a deadline with our powerful Todo App.</h1>
@@ -21,7 +21,7 @@ const HomePage = () => {
                         <img src={HomePageImage} className="rounded-lg sm:h-96 w-96" alt="Home Page main image for the Page" />
                     </div>
                 </section>
-                <section className="flex flex-col items-center justify-center m-3 sm:w-[80%] gap-20 h-screen">
+                <section className="flex flex-col items-center justify-center sm:w-[90%] gap-14 m-1 h-screen bg-gray-400 rounded-lg">
                     <div className="flex flex-col items-center justify-center gap-3">
                         <h1 className="text-3xl font-bold text-center">Powerful Features to Boost Your Productivity</h1>
                         <p className="w-[50%] font-xl font-semibold text-center">Our Todo App offers a suite of features to help you stay organized and on top of your tasks.</p>
@@ -57,7 +57,7 @@ const HomePage = () => {
                         <button className="rounded-lg p-2 border-2 border-gray-900 w-32 hover:bg-black hover:text-white transition-all duration-500">Try it Free</button>
                     </div>
                 </section>
-                <section className="flex flex-col items-center justify-center m-3 sm:w-[80%] gap-2">
+                <section className="flex flex-col items-center justify-center sm:w-[90%] gap-2 p-3 m-1 bg-gray-300 rounded-lg">
                     <h1 className="text-3xl font-bold">Get in touch with us</h1>
                     <p>Have questions or need help? Contact our support team.</p>
                     <div className="flex items-center justify-start gap-4">

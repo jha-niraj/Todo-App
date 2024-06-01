@@ -10,7 +10,7 @@ function Navbar() {
 		navigate('/signin');
 	}
 	return (
-		<div className="flex justify-between items-center p-2 bg-black text-white rounded-md">
+		<div className="flex justify-between items-center p-2 bg-black text-white rounded-md w-full">
 			<div className="">
 				<button className="text-3xl font-bold" onClick={() => navigate("/")}>Todo App</button>
 			</div>

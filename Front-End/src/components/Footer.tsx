@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-		<div className="flex flex-col items-center justify-center bg-black rounded-md text-white p-3">
+		<div className="flex flex-col items-center justify-center bg-black rounded-md text-white p-3 w-full">
 			<div>
 				<h3 className="font-bold text-md">© 2023 Todo App. All rights reserved to Niraj Jha</h3> 
 			</div>
