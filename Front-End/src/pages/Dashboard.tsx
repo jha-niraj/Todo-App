@@ -75,39 +75,37 @@ const Dashboard = () => {
                                         return (
                                             <div className="flex flex-col gap-2">
                                                 <TodosLayout key={index} id={index} title={todo.title} description={todo.description} onDelete={hanldeTodoDeletion} onEdit={handleTodoEdition} />
-                                                {
-                                                    editingTodo && (
-                                                        <div className="flex flex-col gap-1">
-                                                            <input
-                                                                className="h-10 w-full bg-gray-200 rounded-lg text-mini font-semibold focus:border-collapse pl-3 animation-all"
-                                                                type="text"
-                                                                value={editingTodo.title}
-                                                                onChange={(e) => setEditingTodo({ ...editingTodo, title: e.target.value })}
-                                                            />
-                                                            <input
-                                                                className="h-10 w-full bg-gray-200 rounded-lg text-mini font-semibold focus:border-collapse pl-3 animation-all"
-                                                                type="text"
-                                                                value={editingTodo.description}
-                                                                onChange={(e) => setEditingTodo({ ...editingTodo, description: e.target.value })}
-                                                            />
-                                                            <button
-                                                                className="bg-gray-300 hover:bg-black hover:text-white rounded-lg h-10 text-xl font-bold transition-all"
-                                                                onClick={() => {
-                                                                    const updatedTodos = todoList.map((todo) =>
-                                                                        todo.id === editingTodo.id ? editingTodo : todo
-                                                                    );
-                                                                    setTodoList(updatedTodos);
-                                                                    setEditingTodo(null);
-                                                                }}
-                                                            >
-                                                                Save
-                                                            </button>
-                                                        </div>
-                                                    )
-                                                }
                                             </div>
                                         )
                                     })
+                                }
+                                {
+                                    editingTodo && (
+                                        <div className="flex flex-col gap-1">
+                                            <input
+                                                className="h-10 w-full bg-gray-200 rounded-lg text-mini font-semibold focus:border-collapse pl-3 animation-all"
+                                                type="text"
+                                                value={editingTodo.title}
+                                                onChange={(e) => setEditingTodo({ ...editingTodo, title: e.target.value })}
+                                            />
+                                            <input
+                                                className="h-10 w-full bg-gray-200 rounded-lg text-mini font-semibold focus:border-collapse pl-3 animation-all"
+                                                type="text"
+                                                value={editingTodo.description}
+                                                onChange={(e) => setEditingTodo({ ...editingTodo, description: e.target.value })}
+                                            />
+                                            <button
+                                                className="bg-gray-300 hover:bg-black hover:text-white rounded-lg h-10 text-xl font-bold transition-all"
+                                                onClick={() => {
+                                                    const updatedTodos = todoList.map((todo) =>
+                                                            todo.id === editingTodo.id ? editingTodo : todo
+                                                    );
+                                                    setTodoList(updatedTodos);
+                                                    setEditingTodo(null);
+                                                }}
+                                            > Save </button>
+                                        </div>
+                                    )
                                 }
                             </div>
                         </div>
