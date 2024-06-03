@@ -10,9 +10,9 @@ const HomePage = () => {
             <section className="flex flex-col items-center justify-center w-full bg-slate-200 rounded-lg">
                 <section className="flex items-center justify-center sm:w-[90%] flex-col sm:flex-row gap-5 p-2 h-screen bg-gray-300 rounded-lg">
                     <div className="flex flex-col gap-3 sm:w-[50%]">
-                        <h1 className="text-4xl font-bold">Stay on top of your tasks with our Todo App</h1>
-                        <h1>Organize your life, boost your productivity, and never miss a deadline with our powerful Todo App.</h1>
-                        <div className="flex items-center justify-start gap-4">
+                        <h1 className="text-4xl font-bold text-center sm:text-left">Stay on top of your tasks with our Todo App</h1>
+                        <h1 className="text-center sm:text-left">Organize your life, boost your productivity, and never miss a deadline with our powerful Todo App.</h1>
+                        <div className="flex items-center justify-center sm:justify-start gap-4">
                             <button className="rounded-lg p-2 bg-black text-white hover:bg-gray-700 w-36 font-thin transition-all duration-500">Download Now</button>
                             <button className="rounded-lg p-2 border-2 border-gray-900 w-32 hover:bg-black hover:text-white transition-all duration-500">Try it Free</button>
                         </div>
@@ -21,6 +21,7 @@ const HomePage = () => {
                         <img src={HomePageImage} className="rounded-lg sm:h-96 w-96" alt="Home Page main image for the Page" />
                     </div>
                 </section>
+
                 <section className="flex flex-col items-center justify-center sm:w-[90%] gap-14 m-1 h-screen bg-gray-400 rounded-lg">
                     <div className="flex flex-col items-center justify-center gap-3">
                         <h1 className="text-3xl font-bold text-center">Powerful Features to Boost Your Productivity</h1>

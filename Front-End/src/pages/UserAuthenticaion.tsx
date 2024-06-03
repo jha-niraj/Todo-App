@@ -12,7 +12,7 @@ interface UserAuthenticaionProps {
     endpoint: string
 }
 const UserAuthentication = ({ endpoint }: UserAuthenticaionProps) => {
-    const [fullname, setFullname] = useState("");
+    const [fullname, setFullname] = useState<string>("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -44,7 +44,7 @@ const UserAuthentication = ({ endpoint }: UserAuthenticaionProps) => {
     }
 
     return (
-        <section className="flex items-center justify-center h-screen flex-col w-full">
+        <section className="flex items-center justify-between h-screen flex-col w-full">
             <Toaster />
             <Navbar />
             <form className="w-96 shadow-2xl p-4 rounded-lg flex flex-col gap-2" onSubmit={(e) => handleSubmit(e)}>
@@ -80,7 +80,7 @@ const UserAuthentication = ({ endpoint }: UserAuthenticaionProps) => {
                     placeholder="********"
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button className="w-[50%] bg-gray-300 hover:bg-black hover:text-white rounded-lg h-10 text-xl font-semibold transition-all" type="submit">{endpoint}</button>                    
+                <button className="w-[100%] bg-gray-300 hover:bg-black hover:text-white rounded-lg h-10 text-xl font-semibold transition-all" type="submit">{endpoint}</button>                    
                 <div className="flex items-center justify-center gap-2">
                     <hr className="w-full h-1 bg-gray-300" />
                     Or
