@@ -22,3 +22,6 @@ This is a simple Todo App that allows users to manage their tasks and stay organ
 1. Clone the repository
    ```bash
    git clone https://github.com/jha-niraj/Todo-App.git
+
+2. Go to the directory and install the dependecies:
+   ```npm install```
