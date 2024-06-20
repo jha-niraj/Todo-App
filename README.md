@@ -25,3 +25,6 @@ This is a simple Todo App that allows users to manage their tasks and stay organ
 
 2. Go to the directory and install the dependecies:
    ```npm install```
+
+3. Then go the:
+   ```http://localhost:5173```
