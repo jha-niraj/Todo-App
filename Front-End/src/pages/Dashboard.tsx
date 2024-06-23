@@ -135,21 +135,21 @@ interface TodosLayoutDesc {
     onEdit: (todo: { id: number; title: string; description: string }) => void,
 }
 const TodosLayout = ({ id, title, description, onDelete, onEdit } : TodosLayoutDesc) => {
+    const [ isChecked, setIsCheccked ] = useState<Boolean>(false);
     const handleTodoEdit = () => {
-        onEdit({ 
-            id, 
-            title, 
-            description 
-        });
+        onEdit({ id, title, description });
     }
     const handleTodoDelete = () => {
         onDelete(id);
     }
+    const handleChecked = () => {
+        setIsCheccked(c => !c);
+    }
 
     return (
-        <div className="flex justify-between p-2 border-black rounded-lg w-full bg-slate-100">
+        <div className={`flex justify-between p-2 rounded-lg w-full ${isChecked ? "bg-green-300" : "bg-slate-100" }`}>
             <div className="flex gap-3 sm:gap-5 items-center justify-start w-full">
-                <input type="checkbox" className="size-5 flex items-center justify-center checked:bg-red-500" />
+                <input type="checkbox" onChange={handleChecked} className="size-5 flex items-center justify-center checked:bg-red-500" />
                 <div className="flex flex-col">
                     <h1 className="text-md font-semibold">{title}</h1>
                     <p>{description}</p>
