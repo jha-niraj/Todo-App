@@ -7,7 +7,7 @@ This is a simple Todo App that allows users to manage their tasks and stay organ
 - Add new tasks
 - Mark tasks as completed
 - Delete tasks
-- Filter tasks by status (completed, active)
+- Filter tasks by status (completed, active, pending)
 - Responsive design for mobile and desktop
 
 ### Technologies Used
