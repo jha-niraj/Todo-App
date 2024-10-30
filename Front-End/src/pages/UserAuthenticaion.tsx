@@ -44,7 +44,7 @@ const UserAuthentication = ({ endpoint }: UserAuthenticaionProps) => {
     }
 
     return (
-        <section className="flex items-center justify-between h-screen flex-col w-full">
+        <section className="flex items-center justify-between h-screen flex-col w-full py-20">
             <Toaster />
             <Navbar />
             <form className="w-96 shadow-2xl p-4 rounded-lg flex flex-col gap-2" onSubmit={(e) => handleSubmit(e)}>

@@ -1,189 +1,187 @@
+import { ReactNode, useState } from "react";
+import { Menu, CircleCheckBig, Clock4, Plus, X } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import InputBox from "../components/InputBox";
-import { FormEvent, useState } from "react";
-
-// Importing all the necessary icons:
-import { Menu, CircleCheckBig, Clock4, Pencil, Trash } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { addTodo, updateTodo, removeTodo } from "@/todos/todoSlice";
+import { StoreType, todosType } from "@/types";
+import TodoItem from "@/components/TodoItem";
 
 const Dashboard = () => {
-    const [ todoTitle, setTodoTitle ] = useState<string>("");
-    const [ todoDescription, setTodoDescription ] = useState<string>("");
-    const [ todoList, setTodoList ] = useState<{ id: number, title: string; description: string }[]>([]);
-    const [ todoId, setTodoId] = useState<number>(0);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [isAddingTodo, setIsAddingTodo] = useState(false);
+    const [editingTodo, setEditingTodo] = useState<todosType | null>(null);
 
-    const [editingTodo, setEditingTodo] = useState<{ id: number; title: string; description: string } | null>(null);
+    const dispatch = useDispatch();
+    const todos = useSelector((state: StoreType) => state.todos);
+    const totalTodos = useSelector((state: StoreType) => state.todosData.totalTasks);
+    const completedTodos = useSelector((state: StoreType) => state.todosData.completed);
+    const pendingTodos = useSelector((state: StoreType) => state.todosData.pending);
 
-    const handleTodoAddition = (e: FormEvent) => {
+    const handleTodoAddition = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const newTodo = {
-            id: todoId,
-            title: todoTitle,
-            description: todoDescription
-        }
-        setTodoList([...todoList, newTodo])
-        setTodoId(todoId + 1);
-        setTodoTitle("");
-        setTodoDescription("");
-    }
 
-    const handleTodoEdition = (todo: { id: number; title: string; description: string }) => {
+        dispatch(addTodo({
+            title,
+            description,
+            status: false
+        }));
+
+        setTitle("");
+        setDescription("");
+        setIsAddingTodo(false);
+    };
+
+    const handleTodoEdition = (todo: todosType) => {
         setEditingTodo(todo);
+        dispatch(updateTodo(todo));
+        setEditingTodo(null);
     };
-    const hanldeTodoDeletion = (id: number) => {
-        const updatedTodos = todoList.filter(todo => todo.id !== id);
-        setTodoList(updatedTodos);
+
+    const handleTodoDeletion = (id: String) => {
+        dispatch(removeTodo(id));
     };
 
     return (
-        <section className="flex flex-col items-center justify-between w-full">
-            <section className="w-full">
-                <Navbar />
-            </section>
-            <section className="mt-5 mb-5 w-[95%] flex flex-col">
-                <div className="flex flex-col h-full">
-                    <div className="flex flex-col sm:flex-row items-start justify-between">
-                        <h1 className="text-3xl font-bold text-left">Dashboard</h1>
-                        <form onSubmit={handleTodoAddition} className="flex flex-col sm:flex-row items-center justify-center w-[100%] sm:w-[50%]">
-                            <div className="w-full ">
-                                <InputBox
-                                    label=""
-                                    type="text"
-                                    id="todoinput"
-                                    placeholder="Enter your Todo Title here ..."
-                                    name="todoinput"
-                                    onChange={(e) => setTodoTitle(e.target.value)}
+        <div className="min-h-screen bg-gray-50 py-16 mb-10">
+            <Navbar />
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div className="mb-8 flex justify-between items-center">
+                    <h1 className="text-4xl font-bold text-gray-900">Task Dashboard</h1>
+                    <button
+                        onClick={() => setIsAddingTodo(true)}
+                        className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+                    >
+                        <Plus className="mr-2 h-5 w-5" />
+                        Add Task
+                    </button>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-1 space-y-4">
+                        <div className="bg-white rounded-xl shadow-sm p-6 space-y-6">
+                            <h2 className="text-xl font-semibold text-gray-900">Overview</h2>
+                            <div className="space-y-4">
+                                <StatCard
+                                    icon={<Menu className="h-6 w-6" />}
+                                    title="Total Tasks"
+                                    value={totalTodos}
+                                    color="bg-blue-100 text-blue-600"
                                 />
-                                <InputBox
-                                    label=""
-                                    type="text"
-                                    id="todoinput"
-                                    placeholder="Enter your Todo Description here..."
-                                    name="todoinput"
-                                    onChange={(e) => setTodoDescription(e.target.value)}
+                                <StatCard
+                                    icon={<CircleCheckBig className="h-6 w-6" />}
+                                    title="Completed"
+                                    value={completedTodos}
+                                    color="bg-green-100 text-green-600"
                                 />
-                            </div>
-                            <button type="submit" className="w-[97%] sm:w-44 bg-gray-300 hover:bg-black hover:text-white rounded-lg h-10 text-xl font-bold transition-all">Add Todo</button>                    
-                        </form>
-                    </div>
-                    <div className="flex justify-between flex-col sm:flex-row h-full">
-                        <div className="w-full sm:w-[65%] flex flex-col gap-3 items-start justify-start h-full">
-                            <h1 className="text-2xl font-bold">Todos</h1>
-                            <div className="flex flex-col gap-2 w-[95%]">
-                                {
-                                    todoList.map((todo, index) => {
-                                        return (
-                                            <div className="flex flex-col gap-2">
-                                                <TodosLayout key={index} id={index} title={todo.title} description={todo.description} onDelete={hanldeTodoDeletion} onEdit={handleTodoEdition} />
-                                            </div>
-                                        )
-                                    })
-                                }
-                                {
-                                    editingTodo && (
-                                        <div className="flex flex-col gap-1">
-                                            <input
-                                                className="h-10 w-full bg-gray-200 rounded-lg text-mini font-semibold focus:border-collapse pl-3 animation-all"
-                                                type="text"
-                                                value={editingTodo.title}
-                                                onChange={(e) => setEditingTodo({ ...editingTodo, title: e.target.value })}
-                                            />
-                                            <input
-                                                className="h-10 w-full bg-gray-200 rounded-lg text-mini font-semibold focus:border-collapse pl-3 animation-all"
-                                                type="text"
-                                                value={editingTodo.description}
-                                                onChange={(e) => setEditingTodo({ ...editingTodo, description: e.target.value })}
-                                            />
-                                            <button
-                                                className="bg-gray-300 hover:bg-black hover:text-white rounded-lg h-10 text-xl font-bold transition-all"
-                                                onClick={() => {
-                                                    const updatedTodos = todoList.map((todo) =>
-                                                            todo.id === editingTodo.id ? editingTodo : todo
-                                                    );
-                                                    setTodoList(updatedTodos);
-                                                    setEditingTodo(null);
-                                                }}
-                                            > Save </button>
-                                        </div>
-                                    )
-                                }
+                                <StatCard
+                                    icon={<Clock4 className="h-6 w-6" />}
+                                    title="Pending"
+                                    value={pendingTodos}
+                                    color="bg-yellow-100 text-yellow-600"
+                                />
                             </div>
                         </div>
-                        <div className="w-full sm:w-[35%] flex flex-col gap-3 items-start justify-start h-full">
-                            <h1 className="text-2xl font-bold">Overviews</h1>
-                            <div className="flex flex-col gap-5">
-                                <OverViewsLayout title="Total Todos" content="15" />
-                                <OverViewsLayout title="Completed" content="8" />
-                                <OverViewsLayout title="Pending" content="7" />
+                    </div>
+
+                    <div className="lg:col-span-2">
+                        <div className="bg-white rounded-xl shadow-sm p-6">
+                            <h2 className="text-xl font-semibold text-gray-900 mb-6">Tasks</h2>
+                            <div className="space-y-4">
+                                {
+                                    todos.map((todo: todosType, index: number) => (
+                                        <TodoItem
+                                            key={index}
+                                            todo={todo}
+                                            onEdit={() => handleTodoEdition(todo)}
+                                            onDelete={() => handleTodoDeletion(todo.id)}
+                                        />
+                                    ))
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
-            <section className="w-full sm:mt-72">
-                <Footer />
-            </section>
-        </section>
-    )
-}
+            </main>
 
-interface TodosLayoutDesc {
-    title: string,
-    description: string,
-    id: number,
-    onDelete: (id: number) => void,
-    onEdit: (todo: { id: number; title: string; description: string }) => void,
-}
-const TodosLayout = ({ id, title, description, onDelete, onEdit } : TodosLayoutDesc) => {
-    const [ isChecked, setIsCheccked ] = useState<Boolean>(false);
-    const handleTodoEdit = () => {
-        onEdit({ id, title, description });
-    }
-    const handleTodoDelete = () => {
-        onDelete(id);
-    }
-    const handleChecked = () => {
-        setIsCheccked(c => !c);
-    }
-
-    return (
-        <div className={`flex justify-between p-2 rounded-lg w-full ${isChecked ? "bg-green-300" : "bg-slate-100" }`}>
-            <div className="flex gap-3 sm:gap-5 items-center justify-start w-full">
-                <input type="checkbox" onChange={handleChecked} className="size-5 flex items-center justify-center checked:bg-red-500" />
-                <div className="flex flex-col">
-                    <h1 className="text-md font-semibold">{title}</h1>
-                    <p>{description}</p>
-                </div>
-            </div>
-            <div className="flex items-center justify-center gap-5">
-                <button onClick={handleTodoEdit} className="bg-gray-200 p-2 rounded-lg cursor-pointer hover:bg-black hover:text-white transition-all duration-300">
-                    <Pencil />
-                </button>
-                <button onClick={handleTodoDelete} className="bg-gray-200 p-2 rounded-lg cursor-pointer hover:bg-black hover:text-white transition-all duration-300">
-                    <Trash />
-                </button>
-            </div>
-        </div>
-    )
-}
-interface OverviewLayoutDesc {
-    title: string,
-    content: string
-}
-const OverViewsLayout = ({ title, content } : OverviewLayoutDesc) => {
-    return (
-        <div className="flex gap-6 items-center jsutify-center">
-            <div className={`flex bg-gray-300 p-2 rounded-lg ${title === "Completed" ? "bg-green-200" : title === "Pending" ? "bg-yellow-100" : ""}`}>
             {
-                    title === "Total Todos" ? <Menu className="size-8" /> : title === "Completed" ? <CircleCheckBig /> : <Clock4 />
-                }
-            </div>
-            <div>
-                <h1 className="text-mini">{title}</h1>
-                <p className="text-xl font-bold">{content}</p>
-            </div>
+                (isAddingTodo || editingTodo) && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+                        <div className="bg-white rounded-xl p-6 w-full max-w-md">
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-xl font-semibold">
+                                    {editingTodo ? "Edit Task" : "Add New Task"}
+                                </h2>
+                                <button
+                                    onClick={() => {
+                                        setIsAddingTodo(false);
+                                        setEditingTodo(null);
+                                    }}
+                                    className="text-gray-400 hover:text-gray-600"
+                                >
+                                    <X className="h-6 w-6" />
+                                </button>
+                            </div>
+                            <form onSubmit={handleTodoAddition} className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Title
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Enter task title"
+                                        required // Added required attribute for validation
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Description
+                                    </label>
+                                    <textarea
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Enter task description"
+                                        rows={3}
+                                        required // Added required attribute for validation
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200"
+                                >
+                                    {editingTodo ? "Save Changes" : "Add Task"}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                )
+            }
+
+            <Footer />
         </div>
-    )
+    );
+};
+
+interface StatCardProps {
+    icon: ReactNode;
+    title: string;
+    value: number;
+    color: string;
 }
+
+const StatCard = ({ icon, title, value, color }: StatCardProps) => (
+    <div className="flex items-center space-x-4">
+        <div className={`p-3 rounded-lg ${color}`}>{icon}</div>
+        <div>
+            <p className="text-sm text-gray-600">{title}</p>
+            <p className="text-2xl font-bold text-gray-900">{value}</p>
+        </div>
+    </div>
+);
 
 export default Dashboard;
